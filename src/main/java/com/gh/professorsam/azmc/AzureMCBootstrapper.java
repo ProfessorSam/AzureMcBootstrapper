@@ -1,5 +1,10 @@
 package com.gh.professorsam.azmc;
 
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -8,6 +13,7 @@ import java.io.IOException;
 public class AzureMCBootstrapper {
 
     private static final Logger logger = LogManager.getLogger("Bootstrapper");
+    private static final String functionsDomain = Dotenv.load().get("FUNCTIONS_DOMAIN");
 
     public static void main(String[] args) {
         logger.info("Starting bootstrapper");
@@ -55,6 +61,9 @@ public class AzureMCBootstrapper {
     }
 
     private static void shutdownVMFunctionCall(){
-        //TODO implement
+        String url = "https://" + functionsDomain + "/api/stopVM";
+        OkHttpClient httpClient = new OkHttpClient();
+        Request request = new Request.Builder().url(url).post(RequestBody.create(MediaType.parse("text/plain"), "stop")).build();
+        httpClient.newCall(request);
     }
 }
