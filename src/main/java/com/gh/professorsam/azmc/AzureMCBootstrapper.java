@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.Base64;
 
 public class AzureMCBootstrapper {
 
@@ -20,8 +21,8 @@ public class AzureMCBootstrapper {
         logger.info("Starting bootstrapper");
         if(args.length != 0){
             logger.info("Found domain and blob connection string as arguments!");
-            functionsDomain = args[0];
-            blobstring = args[1];
+            functionsDomain = new String(Base64.getDecoder().decode(args[0]));
+            blobstring = new String(Base64.getDecoder().decode(args[1]));
         } else {
             logger.info("Loading domain and blob connection string from environment!");
             functionsDomain = Dotenv.load().get("FUNCTIONS_DOMAIN");

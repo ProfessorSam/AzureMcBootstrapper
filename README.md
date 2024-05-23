@@ -14,4 +14,4 @@ AzureMCBootstrapper is a core component of the AzureMC project. It performs the 
 
 ***or***
 
-Provide the variables via ``java -jar bootloader.jar domain blob`` as command arguments.
+Provide the variables via ``java -jar bootloader.jar domain blob`` as command arguments, where the blob string and domain name are Base64 encoded.
