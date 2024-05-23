@@ -13,10 +13,20 @@ import java.io.IOException;
 public class AzureMCBootstrapper {
 
     private static final Logger logger = LogManager.getLogger("Bootstrapper");
-    private static final String functionsDomain = Dotenv.load().get("FUNCTIONS_DOMAIN");
+    private static String functionsDomain;
+    private static String blobstring;
 
     public static void main(String[] args) {
         logger.info("Starting bootstrapper");
+        if(args.length != 0){
+            logger.info("Found domain and blob connection string as arguments!");
+            functionsDomain = args[0];
+            blobstring = args[1];
+        } else {
+            logger.info("Loading domain and blob connection string from environment!");
+            functionsDomain = Dotenv.load().get("FUNCTIONS_DOMAIN");
+            blobstring = Dotenv.load().get("BLOB_STRING");
+        }
         try {
             ServerDownloader.downloadLatestPaperBuild();
         } catch (IOException e){
@@ -65,5 +75,9 @@ public class AzureMCBootstrapper {
         OkHttpClient httpClient = new OkHttpClient();
         Request request = new Request.Builder().url(url).post(RequestBody.create(MediaType.parse("text/plain"), "stop")).build();
         httpClient.newCall(request);
+    }
+
+    public static String getBlobstring(){
+        return blobstring;
     }
 }

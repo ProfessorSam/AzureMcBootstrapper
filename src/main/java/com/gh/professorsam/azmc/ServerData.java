@@ -14,14 +14,11 @@ public class ServerData {
 
     private static final Logger logger = LogManager.getLogger("ServerData");
 
-    private static final String connectionString;
     private static final BlobServiceClient blobClient;
     private static final BlobContainerClient containerClient;
 
     static {
-        Dotenv dotenv = Dotenv.load();
-        connectionString = dotenv.get("BLOB_STRING");
-        blobClient = new BlobServiceClientBuilder().connectionString(connectionString).buildClient();
+        blobClient = new BlobServiceClientBuilder().connectionString(AzureMCBootstrapper.getBlobstring()).buildClient();
         containerClient = blobClient.createBlobContainerIfNotExists("azmcdata");
     }
 

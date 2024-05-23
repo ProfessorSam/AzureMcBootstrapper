@@ -11,3 +11,7 @@ AzureMCBootstrapper is a core component of the AzureMC project. It performs the 
 ## Envoirement variables
 - `BLOB_STRING`: Connection String vor Azure Blob Storage
 - `FUNCTIONS_DOMAIN`: Funtions domain name for AzureMCFuntions
+
+***or***
+
+Provide the variables via ``java -jar bootloader.jar domain blob`` as command arguments.
