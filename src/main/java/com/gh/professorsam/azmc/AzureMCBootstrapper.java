@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Base64;
+import java.util.concurrent.TimeUnit;
 
 public class AzureMCBootstrapper {
 
@@ -74,8 +75,13 @@ public class AzureMCBootstrapper {
     private static void shutdownVMFunctionCall(){
         String url = "https://" + functionsDomain + "/api/stopVM";
         OkHttpClient httpClient = new OkHttpClient();
+        httpClient.setConnectTimeout(5, TimeUnit.MINUTES);
         Request request = new Request.Builder().url(url).post(RequestBody.create(MediaType.parse("text/plain"), "stop")).build();
-        httpClient.newCall(request);
+        try {
+            httpClient.newCall(request).execute();
+        } catch (IOException e) {
+            throw new RuntimeException(e); //That is *realy* bad!
+        }
     }
 
     public static String getBlobstring(){
